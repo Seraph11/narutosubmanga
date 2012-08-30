@@ -41,5 +41,4 @@ caps.each do |c|
   p 'Images bajadas y movidas al directorio que tal. Chequeando el numero de imagenes'
   puts %x[ls #{dir_name} | wc -l].chop.to_i == pages.to_i ? 'Todas las imagenes fueron descargadas!' : 'oops! No se bajaron todas'
   puts '-------------------------------------------'
-  exit
 end
