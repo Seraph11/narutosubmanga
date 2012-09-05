@@ -26,19 +26,25 @@ p "Hay #{caps.length}"
 caps.each do |c|
   pages = cap_view(view_url % [id(c), 1]).css('select').children.length
   dir_name = dirname(c)
-  Dir.mkdir(dir_name)
+  unless Dir.exist? dir_name
+    Dir.mkdir(dir_name)
 
-  p '#################################################'
-  p "el capitulo #{dir_name} tiene #{pages} paginas/imagenes"
+    p '#################################################'
+    p "el capitulo #{dir_name} tiene #{pages} paginas/imagenes"
 
-  [*1..pages].each do |page|
-    v_url = view_url % [id(c), page]
-    cap = cap_view(v_url)
-    img = cap.css('img').select{ |i| i['src'].index('.jpg')}.first['src']
-    %x[wget #{img}]
+    [*1..pages].each do |page|
+      v_url = view_url % [id(c), page]
+      cap = cap_view(v_url) rescue nil
+      unless cap.nil?
+        img = cap.css('img').select{ |i| i['src'].index('.jpg')}.first['src'] 
+        %x[wget #{img}]
+      else
+        p "#{v_url} no se pudo abrir :("
+      end
+    end
+    %x[mv *.jpg #{dir_name}]
+    p 'Images bajadas y movidas al directorio que tal. Chequeando el numero de imagenes'
+    puts %x[ls #{dir_name} | wc -l].chop.to_i == pages.to_i ? 'Todas las imagenes fueron descargadas!' : 'oops! No se bajaron todas'
+    puts '-------------------------------------------'
   end
-  %x[mv *.jpg #{dir_name}]
-  p 'Images bajadas y movidas al directorio que tal. Chequeando el numero de imagenes'
-  puts %x[ls #{dir_name} | wc -l].chop.to_i == pages.to_i ? 'Todas las imagenes fueron descargadas!' : 'oops! No se bajaron todas'
-  puts '-------------------------------------------'
 end
