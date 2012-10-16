@@ -1,9 +1,13 @@
 Naruto Manga Downloader!
 ########################
 
+Necesitas:
+
+gem install nokogiri
+
 Fácil:
 
-ruby mangdl.rb > log
+ruby mangdal.rb > log
 
 ¡Y listo! Todo el manda de naruto se descargará. Cada carpeta es un capítulo.
 
