@@ -22,6 +22,7 @@ view_url = "http://submanga.com/c/%d/%d"
 caps = Nokogiri::HTML(open('http://submanga.com/Naruto/completa')).css('.caps a').select{|l| not l['href'].nil? }.select { |l| is_cap?(l) }
 
 p "Hay #{caps.length}"
+
 caps.each do |c|
   pages = cap_view(view_url % [id(c), 1]).css('select').children.length
   dir_name = dirname(c)
