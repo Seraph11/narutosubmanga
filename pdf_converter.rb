@@ -11,8 +11,7 @@ class PdfConverter
 
     source_path = source_path.strip.chomp('/')
     return nil unless Dir.exists? source_path
-    %x[convert #{sanitize(source_path)}/*.??g #{sanitize(source_path)}/#{sanitize(file_name)}.pdf]
-    return $?.exitstatus == 0 ? true : false
+    system("convert #{sanitize(source_path)}/*.??g #{sanitize(source_path)}/#{sanitize(file_name)}.pdf")
   end
 
   def sanitize(str)
